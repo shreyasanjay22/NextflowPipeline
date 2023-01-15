@@ -9,8 +9,8 @@ params.threads = 8
 
 /
 *
-*process takes fastq files input
-*Utilizes trimmomatic tool to trim for quality and adapter sequences
+* process takes fastq files input
+* utilizes trimmomatic tool to trim for quality and adapter sequences
 *
 /
 
@@ -29,7 +29,7 @@ process trimming {
 
 /
 *
-*
+* fastqc reports of the trimmed reads
 *
 /
 process fastqc_trimmed {
@@ -48,7 +48,7 @@ process fastqc_trimmed {
 
 /
 *
-*star aligner to align reads to reference genome
+* star aligner to align reads to reference genome
 *
 /
 
@@ -68,8 +68,8 @@ process alignment {
 
 /
 *
-*Takes algined bam files and uses featurecount to perform quanitification
-*Output is tab separated gene counts
+* takes algined bam files and uses featurecount to perform quanitification
+* returns is tab separated gene counts
 /
 process quantification {
     input:
@@ -86,8 +86,8 @@ process quantification {
 
 /
 *
-*
-*
+* generates multiQC reports taking input counts and fastqc
+*  
 /
 
 process multiqc {
@@ -106,7 +106,7 @@ process multiqc {
 
 /
 *
-*Channel keywords to link out put of one process as input of the other
+* Channel keywords to link out put of one process as input of the other
 *
 /
 

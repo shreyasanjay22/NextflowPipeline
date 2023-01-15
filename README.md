@@ -1,6 +1,6 @@
 # RNA-seq Analysis Pipeline
 
-This pipeline is designed to process RNA-seq data from fastq files to quantification files. The pipeline includes the following steps:\
+This pipeline is designed to process RNA-seq data from fastq files to quantification files. The pipeline includes the following steps:
 
 Trimming of reads\
 Alignment of reads to a reference genome\

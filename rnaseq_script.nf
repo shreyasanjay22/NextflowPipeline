@@ -1,18 +1,21 @@
+#!/usr/bin/env nextflow
 
 
-params.genomeIndex = "/path/to/genomeIndex"
-params.annotation = "/path/to/annotation.gtf"
-params.adapters = "/path/to/adapters.fa"
-params.input_dir = "/path/to/input_fastq_files"
-params.output_dir = "/path/to/output_files"
-params.threads = 8
+// Input and Output Directories
+params.input_dir = "${params.input_dir}"
+params.output_dir = "${params.output_dir}"
 
-/
-*
-* process takes fastq files input
-* utilizes trimmomatic tool to trim for quality and adapter sequences
-*
-/
+// Reference files
+params.genomeIndex = "${params.genomeIndex}"
+params.annotation = "${params.annotation}"
+params.adapters = "${params.adapters}"
+
+// Threads
+params.threads = "${params.threads}"
+
+
+//process takes fastq files input
+//utilizes trimmomatic tool to trim for quality and adapter sequences
 
 process trimming {
     input:
@@ -27,11 +30,9 @@ process trimming {
         """
 }
 
-/
-*
-* fastqc reports of the trimmed reads
-*
-/
+
+// fastqc reports of the trimmed reads
+
 process fastqc_trimmed {
     input:
         file("${params.output_dir}/*.trim.fastq")
@@ -45,12 +46,7 @@ process fastqc_trimmed {
         """
 }
 
-
-/
-*
-* star aligner to align reads to reference genome
-*
-/
+//star aligner to align reads to reference genome
 
 process alignment {
     input:
@@ -65,12 +61,9 @@ process alignment {
         """
 }
 
+// takes algined bam files and uses featurecount to perform quanitification
+// returns a tab separated gene counts
 
-/
-*
-* takes algined bam files and uses featurecount to perform quanitification
-* returns is tab separated gene counts
-/
 process quantification {
     input:
         file("${params.output_dir}/*.bam")
@@ -84,11 +77,8 @@ process quantification {
         """
 }
 
-/
-*
-* generates multiQC reports taking input counts and fastqc
-*  
-/
+
+// generates multiQC reports taking input counts and fastqc
 
 process multiqc {
     input:
@@ -104,11 +94,8 @@ process multiqc {
         """
 }
 
-/
-*
-* Channel keywords to link out put of one process as input of the other
-*
-/
+//keywords to link out put of one process as input of the other
+
 
 trimming.output -> fastqc_trimmed.input
 fastqc_trimmed.output -> alignment.input

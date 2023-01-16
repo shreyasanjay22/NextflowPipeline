@@ -1,37 +1,42 @@
 # RNA-seq Analysis Pipeline
 
-This pipeline is designed to process RNA-seq data from fastq files to quantification files. The pipeline includes the following steps:
+This pipeline automates the process of RNA-seq analysis by performing several steps such as trimming, alignment, quantification, and summarizing the results.
 
-Trimming of reads\
-Alignment of reads to a reference genome\
-Quantification of gene expression\
-Quality control analysis
-
-
-## Requirements
-Nextflow\
+## Prerequisites
 Docker\
-Reference genome and annotation files\
-Pre-built genome index for STAR aligner\
-Input fastq files
+Nextflow
 
-## Usage
-1) Clone the repository and navigate to the directory containing the pipeline
+## Installation
+Clone this repository: git clone https://github.com/your_username/RNA-seq-pipeline.git\
+Build the Docker image: docker build -t rna-seq-pipeline .\
+Make sure to adjust the paths and parameters in the config file (config.nf) to match your specific pipeline and system.\
 
-```bash
-git clone https://github.com/<username>/rnaseq-pipeline
-cd rnaseq-pipeline
-```
-
-2) Build the Docker image using the provided Dockerfile
+# Usage
+To run the pipeline, use the following command:
 
 ```
-docker build -t rnaseq-pipeline .
+nextflow run pipeline.nf -c config.nf
 ```
+This command runs the pipeline.nf script with the options specified in the config.nf file\
 
-3) Run the pipeline using Nextflow and the Docker image. Make sure to replace the placeholder values in the command with the appropriate paths for your system.
+## Output
+The pipeline generates several output files, including:\
 
-```
-nextflow run pipeline.nf -profile docker --genomeIndex /path/to/genomeIndex --annotation /path/to/annotation.gtf --adapters /path/to/adapters.fa --input_dir /path/to/input_fastq_files --output_dir /path/to/output_files --threads 8
-```
+Trimmed fastq files\
+Fastqc reports of the trimmed reads\
+Aligned bam files\
+Tab-separated gene counts\
+MultiQC report\
+The output files are located in the directory specified in the config file.
+
+## Dependencies\
+The pipeline uses the following tools and libraries:\
+
+Trimmomatic\
+FastQC\
+STAR aligner\
+FeatureCounts\
+MultiQC\
+All dependencies are included in the Docker image.
+
 

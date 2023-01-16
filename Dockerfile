@@ -1,25 +1,30 @@
+# Use an existing image as the base
 FROM ubuntu:latest
 
+# Install necessary dependencies
 RUN apt-get update && apt-get install -y \
+    trimmomatic \
+    fastqc \
+    STAR \
+    subread \
     wget \
     unzip \
     openjdk-8-jre-headless \
-    trimmomatic \
-    STAR \
-    subread \
-    fastqc \
-    multiqc 
+    && rm -rf /var/lib/apt/lists/*
 
-RUN wget https://github.com/nextflow-io/nextflow/releases/download/v20.10.0/nextflow \
-    && chmod +x nextflow \
-    && mv nextflow /usr/local/bin/
+# Download and install Nextflow
+RUN wget -qO- https://get.nextflow.io | bash
 
-COPY genomeIndex /path/to/genomeIndex
-COPY annotation.gtf /path/to/annotation.gtf
-COPY adapters.fa /path/to/adapters.fa
-COPY my_pipeline.nf /path/to/my_pipeline.nf
+# Copy the Nextflow script into the container
+COPY pipeline.nf /root/pipeline.nf
 
-ENV PATH="/path/to/genomeIndex:${PATH}"
+# Copy the necessary reference files into the container
+COPY genomeIndex/ /root/genomeIndex/
+COPY annotation.gtf /root/annotation.gtf
+COPY adapters.fa /root/adapters.fa
 
-CMD ["nextflow", "run", "/path/to/my_pipeline.nf", "--genomeIndex", "/path/to/genomeIndex", "--annotation", "/path/to/annotation.gtf", "--adapters", "/path/to/adapters.fa", "--input_dir", "/path/to/input_fastq_files", "--output_dir", "/path/to/output_files", "--threads", "8"]
+# Set the working directory
+WORKDIR /root
 
+# Run the Nextflow script
+CMD ["nextflow", "run", "pipeline.nf"]
